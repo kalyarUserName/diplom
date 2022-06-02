@@ -1,0 +1,34 @@
+:root {
+    --bg-opacity: 1;
+}
+.logo{
+    height: 50px;
+    width: 50px;
+    margin-right: auto;
+    margin-left: 1em;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border: 10px dotted black;
+    padding: 7px;
+}
+.header1{
+    padding: 1rem 2.5rem;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+    background-color: #2F0739;
+    background-color: rgba(47, 7, 57, var(--bg-opacity));
+}
+.avatar{
+    align-self: end;
+    margin-left: auto;
+    margin-right: 1em;
+}
+
+.loginAndReg {
+    float: right;
+}

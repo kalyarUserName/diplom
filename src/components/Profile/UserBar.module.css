@@ -1,0 +1,8 @@
+.userBar{
+    display: inline-block;
+    min-width: 100px;
+    max-width: 200px;
+}
+.icons{
+    display: inline-block;
+}

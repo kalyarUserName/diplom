@@ -1,0 +1,23 @@
+.pagerStyle {
+    padding: 20px;
+    height: 440px;
+    width: 400px;
+    margin: 20px auto;
+}
+
+.avatarLock {
+    background-color: #1bbd7e;
+}
+
+.textField {
+    margin-top: 15px;
+}
+
+.button {
+    margin: 25px 0 !important;
+    padding: 10px 0 !important;
+}
+
+.createAcc {
+    text-align: center;
+}
