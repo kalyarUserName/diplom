@@ -24,7 +24,7 @@ const generalReducer = (state = initialState, action) => {
             state.aboutUser = potentialUser.aboutUser;
             state.authS = true;
             }
-            console.log("state >", state);
+            console.log("reducer state >", state);
             // state.token = action.payload.token;
             return state;
         case LOGOUT:

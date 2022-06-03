@@ -22,7 +22,11 @@ export function getStudent(id) {
     let stud = studs.find((stud) => stud.id == id);
     return stud;
 }
-
+let bindingUser = [
+    {id: 1, users: [2]},
+    {id: 2, users: [1, 3]},
+    {id: 3, users: [2]},
+]
 export let users = [
     {id: 1, userName: "zavr", name: "Завражный Кирилл Юрьевич", password: "0000", Teacher: false, aboutUser: {}},
     {id: 2, userName: "sys", name: "Сысоев Альфред Феликсович", password: "1111", Teacher: true, aboutUser: {}},
@@ -31,4 +35,15 @@ export let users = [
 
 export function getUserFromDB(userName, password) {
     return users.find((user) => user.userName === userName && user.password === password)
+}
+
+export function getBindingUser(id) {
+    let res = [];
+    let bindingUser = bindingUser.find((user) => user.id == id).users;
+    bindingUser.map((id) => {
+        res.push(getUserFromDB(id))
+    })
+    res.map((bindingU) => {
+        bindingU.password = ''
+    })
 }

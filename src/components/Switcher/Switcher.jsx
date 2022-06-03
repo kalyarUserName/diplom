@@ -13,9 +13,19 @@ import Tables from "../Table/Tables";
 import MyProfileContainer from "../Profile/MyProfileContainer";
 import store from "../../store/store";
 
-const Switcher = () => {
+const Switcher = (props) => {
+
     let authS = store.getState().general.authS;
     const [auth, setAuth] = useState(authS);
+    let dialog = store.getState().dialog;
+    useEffect(() => {
+        // locAuth = localStorage.getItem('auth');
+        if (localStorage.getItem('auth')) {
+            console.log("Switcher AUTH > ", auth);
+            setAuth(true);
+            console.log("Switcher AUTH < ", auth);
+        }
+    }, [localStorage.getItem('auth')]);
     // useEffect(()=> {
     //     if(localStorage.getItem('auth'))
     //         setAuth(true);
@@ -23,12 +33,12 @@ const Switcher = () => {
     // console.log('Свитчер локал = ',localStorage.getItem('auth'));
     // if(localStorage.getItem('auth'))
     //     setAuth(true);
-    //console.log("свитчер auth = ", auth);
+    console.log("свитчер auth = ", auth);
     return auth ? (<Routes>
                 <Route path="/about" element={<About/>}/>
                 <Route path="/howtouse" element={<HowToUse/>}/>
                 <Route path="/chats" element={<Chats/>}>
-                    <Route path=":chatId" element={<Chat/>}/>
+                    <Route path=":chatId" element={<Chat messages={dialog.messages}/>}/>
                 </Route>
                 <Route path="/tables" element={<Tables/>}>
                     <Route path=":tableId" element={<Table/>}/>
@@ -42,7 +52,7 @@ const Switcher = () => {
             </Routes>
         )
         : (<Routes>
-            <Route path="/login" element={<Login/>}/>
+            <Route path="/login" element={<Login setAuth={props.setAuth}/>}/>
             <Route path="/registration" element={<Registration/>}/>
             <Route path="/about" element={<About/>}/>
             <Route path="/howtouse" element={<HowToUse/>}/>

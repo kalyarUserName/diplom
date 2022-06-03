@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux";
 import {authActionCreator} from "../../store/actionCreators/authActionCreator";
 import store from "../../store/store";
 
-const Login = () => {
+const Login = (props) => {
     const dispatch = useDispatch();
     const [User, setUser] = useState(store.getState().general);
     const [isAuth, setIsAuth] = useState(false);
@@ -15,6 +15,7 @@ const Login = () => {
         user: "",
         password: "",
     });
+
     const handleChange = (e) => {
         const {name, value} = e.target;
         setRegData({...regData, [name]: value});
@@ -23,9 +24,10 @@ const Login = () => {
         dispatch(authActionCreator(regData));
         setUser(store.getState().general);
         setIsAuth(User.authS);
+        props.setAuth(true);
     };
     if(isAuth) {
-        localStorage.setItem("auth", JSON.stringify(User));
+        localStorage.setItem("auth", JSON.stringify(regData));
         return <Navigate to={"/myprofile"}/>
     }
     return (

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar} from "@mui/material";
 import s from './Header.module.css'
 import {Link} from "react-router-dom";
@@ -6,7 +6,17 @@ import {routes, privateRoutes} from "../../constants/routes";
 
 const Header = (props) => {
     const [auth, setAuth] = useState(props.auth);
+    console.log("Header start AUTH = ", auth)
     const [user, setUser] = useState(props.user);
+    useEffect(() => {
+        // locAuth = localStorage.getItem('auth');
+        if (localStorage.getItem('auth')) {
+            console.log("Header AUTH > ", auth);
+            setAuth(true);
+            console.log("Header AUTH < ", auth);
+        }
+    }, [localStorage.getItem('auth')]);
+    console.log(user);
     const route = auth ? privateRoutes : routes;
     return (<Box sx={{flexGrow: 1}}>
             <AppBar position="static">
@@ -30,7 +40,7 @@ const Header = (props) => {
                         </div>
                         : <div>
                             <IconButton className={s.loginAndReg}>
-                                <Avatar component={Link} to="myprofile">{user.userName.charAt(0)}</Avatar>
+                                <Avatar component={Link} to="myprofile">{user}</Avatar>
                             </IconButton>
                         </div>}
                 </Toolbar>

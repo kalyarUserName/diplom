@@ -8,12 +8,14 @@ import TeacherProfile from "./TeacherProfile";
 import StudentProfile from "./StudentProfile";
 import {useSelector} from "react-redux";
 import store from "../../store/store";
+import {getBindingUser} from "../../constants/users";
 
 const MyProfile = (props) => {
     let state = store.getState().general;
     const [isTeacher, setTeacher] = useState(state.Teacher);
     const [value, setValue] = React.useState(new Date());
-
+    console.log("My plofile = ", state)
+    // console.log('Binding users for',state.currentUser," = ",getBindingUser(state.currentUser));
     const addStudent = () => {
 
     }
