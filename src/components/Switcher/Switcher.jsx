@@ -11,19 +11,19 @@ import Table from "../Table/Table";
 import Chats from "../Chat/Chats";
 import Tables from "../Table/Tables";
 import MyProfileContainer from "../Profile/MyProfileContainer";
-import store from "../../store/store";
+import {useStore} from "react-redux";
 
 const Switcher = (props) => {
-
+    const store = useStore();
     let authS = store.getState().general.authS;
     const [auth, setAuth] = useState(authS);
     let dialog = store.getState().dialog;
+    if (authS && !auth)
+        setAuth(true);
     useEffect(() => {
         // locAuth = localStorage.getItem('auth');
         if (localStorage.getItem('auth')) {
-            console.log("Switcher AUTH > ", auth);
             setAuth(true);
-            console.log("Switcher AUTH < ", auth);
         }
     }, [localStorage.getItem('auth')]);
     // useEffect(()=> {
@@ -33,12 +33,11 @@ const Switcher = (props) => {
     // console.log('Свитчер локал = ',localStorage.getItem('auth'));
     // if(localStorage.getItem('auth'))
     //     setAuth(true);
-    console.log("свитчер auth = ", auth);
     return auth ? (<Routes>
                 <Route path="/about" element={<About/>}/>
                 <Route path="/howtouse" element={<HowToUse/>}/>
-                <Route path="/chats" element={<Chats/>}>
-                    <Route path=":chatId" element={<Chat messages={dialog.messages}/>}/>
+                <Route path="/chats" element={<Chats messages={dialog.messages} users={store.getState().profile.users}/>}>
+                    <Route path=":chatId" element={<Chat/>}/>
                 </Route>
                 <Route path="/tables" element={<Tables/>}>
                     <Route path=":tableId" element={<Table/>}/>
@@ -53,7 +52,7 @@ const Switcher = (props) => {
         )
         : (<Routes>
             <Route path="/login" element={<Login setAuth={props.setAuth}/>}/>
-            <Route path="/registration" element={<Registration/>}/>
+            <Route path="/registration" element={<Registration setAuth={props.setAuth}/>}/>
             <Route path="/about" element={<About/>}/>
             <Route path="/howtouse" element={<HowToUse/>}/>
             <Route path="/myprofile" element={<Navigate replace to="/login"/>}/>

@@ -23,10 +23,15 @@ const Login = (props) => {
     const handleSubmit = () => {
         dispatch(authActionCreator(regData));
         setUser(store.getState().general);
+        // console.log("LOGIN auth before", isAuth, regData)
         setIsAuth(User.authS);
+        // console.log("LOGIN auth before", isAuth, regData)
         props.setAuth(true);
+        localStorage.setItem("auth", JSON.stringify(regData));
+
     };
     if(isAuth) {
+        console.log("LOGIN isAUTH", isAuth, regData)
         localStorage.setItem("auth", JSON.stringify(regData));
         return <Navigate to={"/myprofile"}/>
     }

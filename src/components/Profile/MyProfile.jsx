@@ -6,20 +6,28 @@ import {StaticDatePicker} from '@mui/x-date-pickers/StaticDatePicker';
 import s from './MyProfile.module.css'
 import TeacherProfile from "./TeacherProfile";
 import StudentProfile from "./StudentProfile";
-import {useSelector} from "react-redux";
 import store from "../../store/store";
-import {getBindingUser} from "../../constants/users";
+import {getUserFromDBWithoutPass} from "../../constants/users";
+import {useDispatch} from "react-redux";
+import {logoutActionCreator} from "../../store/actionCreators/authActionCreator";
+import {Navigate} from "react-router-dom";
 
 const MyProfile = (props) => {
     let state = store.getState().general;
     const [isTeacher, setTeacher] = useState(state.Teacher);
     const [value, setValue] = React.useState(new Date());
-    console.log("My plofile = ", state)
-    // console.log('Binding users for',state.currentUser," = ",getBindingUser(state.currentUser));
+    console.log("MYPROFILE GEN", state);
+    let curUser = getUserFromDBWithoutPass(state.currentUser.userName);
+    console.log("MYPROFILE curUser", curUser);
+    const [auth, setAuth] = useState(false);
     const addStudent = () => {
 
     }
-
+    let dispatch = useDispatch();
+    const logout = () => {
+        dispatch(logoutActionCreator())
+        return <Navigate to={"/login"}/>
+    }
     return (
         <Box>
             <Grid container spacing={4}>
@@ -34,17 +42,23 @@ const MyProfile = (props) => {
                                 }}
                             />
                             <Typography align="center" variant="h5">
-                                <b>Фамилия Имя Отчество</b>
+                                <b>{curUser.name}</b>
                             </Typography>
                             <Typography align="justify" variant="h6">
-                                Кафедра
+                                {curUser.aboutUser.kafedra}
                             </Typography>
-                            <Typography align="justify" variant="h6">
-                                Должность
-                            </Typography>
-                            <Typography align="justify" variant="h6">
-                                Звание
-                            </Typography>
+                            {isTeacher ? <div>
+                                <Typography align="justify" variant="h6">
+                                    Должность
+                                </Typography>
+                                <Typography align="justify" variant="h6">
+                                    Звание
+                                </Typography>
+                            </div> : <div></div>
+                            }
+                            <Button variant="outlined" onClick={logout}>
+                                Выйти
+                            </Button>
                         </Paper>
                     </Grid>
 
@@ -70,11 +84,15 @@ const MyProfile = (props) => {
                         <Typography variant="h5" align="center">
                             Южный Федеральный Университет
                         </Typography>
-                        <Button variant="outlined" onClick={addStudent}>
-                            Добавить ученика
-                        </Button>
+
                         {
-                            isTeacher ? <TeacherProfile users={props.users}/> : <StudentProfile users={props.users}/>
+                            isTeacher ? <div>
+                                    <Button variant="outlined" onClick={addStudent}>
+                                        Добавить ученика
+                                    </Button>
+                                    <TeacherProfile users={props.users}/>
+                                </div> :
+                                <StudentProfile users={props.users} me={curUser}/>
                         }
                     </Paper>
                 </Grid>

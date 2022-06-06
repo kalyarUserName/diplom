@@ -4,9 +4,11 @@ import MyProfile from "./MyProfile";
 
 const mapStateToProps = (state) => {
     console.log("state:::: ", state);
+    console.log("state: users ", state.profile.users);
     return {
         users: state.profile.users
     }
+
 }
 
 const mapDispatchToProps = (dispatch) => {

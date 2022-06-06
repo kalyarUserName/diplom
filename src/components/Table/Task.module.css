@@ -1,0 +1,55 @@
+.done {
+    color: green;
+}
+
+.none {
+    color: grey;
+}
+
+.cancel {
+    color: red;
+}
+
+.edit {
+    color: yellow;
+}
+
+.editIcon {
+    width: 35px !important;
+    height: 35px !important;
+    padding: 0 0 5px 0;
+    float: right;
+}
+
+.task {
+    margin: 10px 5px 10px 5px;
+    padding: 5px;
+    width: 450px;
+    display: inline-flex;
+}
+
+.taskInside {
+    padding: 17px;
+    display: inline-block;
+}
+
+.name {
+    width: 70%;
+    display: inline-block;
+}
+
+.firstRow {
+
+}
+
+.desc {
+    margin-top: 10px;
+}
+
+.status {
+    display: inline-block;
+}
+
+.dates {
+    margin-top: 15px;
+}

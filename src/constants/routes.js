@@ -13,7 +13,7 @@ export const routes = [
 ]
 export const privateRoutes = [
     {path: '/', exact: true, desc: 'Главная'},
-    {path: '/table', exact: false, desc: 'Виртуальная доска'},
+    {path: '/tables', exact: false, desc: 'Виртуальная доска'},
     {path: '/about', exact: false, desc: 'О проекте'},
     {path: '/howtouse', exact: false, desc: 'Как пользоваться'}
 ]

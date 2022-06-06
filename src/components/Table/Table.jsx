@@ -1,13 +1,37 @@
 import React from 'react';
 import {useParams} from "react-router-dom";
-import {getStudent} from '../../constants/users'
+import {getUserNameFromDBID} from '../../constants/users'
+import ArticleIcon from "@mui/icons-material/Article";
+import {IconButton} from "@mui/material";
+import Task from "./Task";
+import s from "./Table.module.css"
+import {getTasks} from "../../constants/table";
 
-const Table = () => {
+
+const Table = ({name, document, percent}) => {
+
     let params = useParams();
-    let stud = getStudent(params.tableId)
+    let stud = getUserNameFromDBID(params.tableId)
+    const tasks = getTasks(params.tableId);
+
+    const onDocClick = () => {
+        window.location.assign(document);
+    }
     return (
         <div>
-            <h2>Table of you and {stud.userName}</h2>
+            <IconButton onClick={onDocClick} click component={ArticleIcon} className={s.docIcon}></IconButton>
+
+            <h2>Работа {stud.name}</h2>
+            <div className={s.tasks}>
+                {
+                    tasks.map((task, index) => (
+                            <Task key={index} name={task.name} status={task.status} desc={task.desc}
+                                  startDate={task.startDate}
+                                  endDate={task.endDate}/>
+                        )
+                    )}
+            < /div>
+
         </div>
     );
 };

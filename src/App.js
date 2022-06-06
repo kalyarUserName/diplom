@@ -1,32 +1,26 @@
 import './App.css';
 import Header from "./components/Header/Header";
 import Switcher from "./components/Switcher/Switcher";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import s from "./components/Home/Home.module.css";
-import {Grid, IconButton, Paper} from "@mui/material";
-import {ChatOutlined} from '@mui/icons-material';
-import store from "./store/store";
+import {Grid, Paper} from "@mui/material";
 import {authActionCreator} from "./store/actionCreators/authActionCreator";
-import {useDispatch} from "react-redux";
-
-// import {createTheme} from '@mui/system';
+import {useDispatch, useStore} from "react-redux";
 
 function App() {
     const [auth, setAuth] = useState(false);
-    const [user, setUser] = useState('Гость');
+    const [user, setUser] = useState('');
+    const store = useStore();
     const dispatch = useDispatch();
     let locAuth = localStorage.getItem('auth');
-    if (locAuth && !auth)
-        setAuth(true);
-    // console.log("APP AUTH in start App> ", auth);
-    // useEffect(() => {
-    //     // locAuth = localStorage.getItem('auth');
-    //     if (localStorage.getItem('auth'))
-    //     {
-    //         //dispatch(authActionCreator());
-    //         setAuth(true);
-    //         console.log("APP AUTH < ", auth);
-    // }}, [localStorage.getItem('auth')]);
+    if (locAuth && !auth) {
+        let AuthUser = JSON.parse(locAuth);
+        dispatch(authActionCreator({user: AuthUser.user, password: AuthUser.password}));
+        setAuth(store.getState().general.authS);
+        if (!store.getState().general.authS) {
+            localStorage.removeItem('auth')
+        }
+    }
     return (
         <div>
             <Header auth={auth} user={locAuth ? JSON.parse(locAuth).currentUser : 'Гость'}/>

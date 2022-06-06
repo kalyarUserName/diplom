@@ -1,18 +1,24 @@
 import React from 'react';
 import {Typography} from "@mui/material";
+import UserBar from "./Userbar";
 
-const StudentProfile = () => {
+const StudentProfile = (props) => {
     return (
         <div>
             <Typography align="justify" variant="h6">
-                Курс
+                {props.me.aboutUser.course}
             </Typography>
             <Typography align="justify" variant="h6">
-                Специальность
+                {props.me.aboutUser.spec}
             </Typography>
             <Typography align="justify" variant="h6">
-                Научный руководитель
+                Научный руководитель: <br/>
+                {props.me.aboutUser.supervisor}
             </Typography>
+            {
+                props.users.map((user) =>
+                    (<UserBar key={user.id} id={user.id} userName={user.name}/>))
+            }
         </div>
     );
 };

@@ -20,10 +20,10 @@ const UserBar = (props) => {
                 <Box className={s.icons}>
                     <Paper>
                         <SentimentSatisfiedIcon sx={{color: 'green'}}/>12%
-                        <L key="table" to={`/tables/${props.id}`} sx={{width: 30}}>
+                        <L to={`/tables/${props.id}`} sx={{width: 30}}>
                             <SvgIcon component={CalendarMonth}/>
                         </L>
-                        <L key="chat" to={`/chats/${props.id}`}>
+                        <L to={`/chats/${props.id}`}>
                             <SvgIcon component={Chat} sx={{width: 30, mt: 1}}/>
                         </L>
                     </Paper>

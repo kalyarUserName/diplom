@@ -3,10 +3,9 @@ import Table from "./Table";
 
 const Tables = () => {
     return (
-        <div>
-            Таблицы
-            <Table />
-        </div>
+        <Table document={
+            "https://disk.yandex.ru/i/-KTKgO9E35z6Fh"
+        }/>
     );
 };
 
