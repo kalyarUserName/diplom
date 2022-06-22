@@ -1,4 +1,4 @@
-import {CHANGE_MESSAGE, SEND_MESSAGE} from "../actions/actions"
+import {AUTH, CHANGE_MESSAGE, SEND_MESSAGE} from "../actions/actions"
 
 let initialState = {
     dialogs: [],
@@ -13,11 +13,10 @@ let initialState = {
 //
 const dialogReducer = (state = initialState, action) => {
     switch (action.type) {
+        case AUTH:
+            return state;
         case SEND_MESSAGE:
-            console.log("dialog SEND_MESSAGE", action, state)
-            // let cur = store.getState().general.currentUser;
             state.messages.push({user: action.user, message: action.message});
-            //  messages.push({userfrom: {id: cur.id, userName: cur.name}, user: action.user, message: action.message});
             state.newMessage = "";
             return state;
         case CHANGE_MESSAGE:

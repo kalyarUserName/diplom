@@ -16,10 +16,9 @@ const MyProfile = (props) => {
     let state = store.getState().general;
     const [isTeacher, setTeacher] = useState(state.Teacher);
     const [value, setValue] = React.useState(new Date());
-    console.log("MYPROFILE GEN", state);
     let curUser = getUserFromDBWithoutPass(state.currentUser.userName);
-    console.log("MYPROFILE curUser", curUser);
     const [auth, setAuth] = useState(false);
+    console.log('MyProfile props', props)
     const addStudent = () => {
 
     }
@@ -40,22 +39,24 @@ const MyProfile = (props) => {
                                 sx={{
                                     width: 200, height: 200, mb: 3
                                 }}
+                                src={curUser.avatar}
                             />
                             <Typography align="center" variant="h5">
                                 <b>{curUser.name}</b>
                             </Typography>
-                            <Typography align="justify" variant="h6">
-                                {curUser.aboutUser.kafedra}
-                            </Typography>
                             {isTeacher ? <div>
+                                {/*<Typography align="justify" variant="h6">*/}
+                                {/*    Должность*/}
+                                {/*</Typography>*/}
                                 <Typography align="justify" variant="h6">
-                                    Должность
-                                </Typography>
-                                <Typography align="justify" variant="h6">
-                                    Звание
+                                    {curUser.aboutUser.rank}
                                 </Typography>
                             </div> : <div></div>
                             }
+                            <Typography align="left" variant="h6">
+                                {curUser.aboutUser.kafedra}
+                            </Typography>
+                            <br/>
                             <Button variant="outlined" onClick={logout}>
                                 Выйти
                             </Button>
@@ -87,10 +88,11 @@ const MyProfile = (props) => {
 
                         {
                             isTeacher ? <div>
-                                    <Button variant="outlined" onClick={addStudent}>
+
+                                    <Button variant="outlined" onClick={addStudent} className={s.addButton}>
                                         Добавить ученика
                                     </Button>
-                                    <TeacherProfile users={props.users}/>
+                                    <TeacherProfile users={props.users} notification={props.notifications}/>
                                 </div> :
                                 <StudentProfile users={props.users} me={curUser}/>
                         }

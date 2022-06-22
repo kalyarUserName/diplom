@@ -12,28 +12,27 @@ import Chats from "../Chat/Chats";
 import Tables from "../Table/Tables";
 import MyProfileContainer from "../Profile/MyProfileContainer";
 import {useStore} from "react-redux";
+import NotFound from "../NotFound/NotFound";
 
+//Компонент, осуществляющий маршрутизацию по различным компонентам, в зависимости от url
+// без перезагрузки страницы
 const Switcher = (props) => {
     const store = useStore();
     let authS = store.getState().general.authS;
     const [auth, setAuth] = useState(authS);
     let dialog = store.getState().dialog;
+
     if (authS && !auth)
         setAuth(true);
+
     useEffect(() => {
-        // locAuth = localStorage.getItem('auth');
         if (localStorage.getItem('auth')) {
             setAuth(true);
         }
     }, [localStorage.getItem('auth')]);
-    // useEffect(()=> {
-    //     if(localStorage.getItem('auth'))
-    //         setAuth(true);
-    // },[localStorage.getItem('auth')]);
-    // console.log('Свитчер локал = ',localStorage.getItem('auth'));
-    // if(localStorage.getItem('auth'))
-    //     setAuth(true);
-    return auth ? (<Routes>
+
+    return auth ? (
+            <Routes>
                 <Route path="/about" element={<About/>}/>
                 <Route path="/howtouse" element={<HowToUse/>}/>
                 <Route path="/chats" element={<Chats messages={dialog.messages} users={store.getState().profile.users}/>}>
@@ -47,7 +46,7 @@ const Switcher = (props) => {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/login" element={<Navigate replace to="/myprofile"/>}/>
                 <Route path="/registration" element={<Navigate replace to="/myprofile"/>}/>
-                <Route path="*" element={<div>Страница не найдена!</div>}/>
+                <Route path="*" element={<NotFound/>}/>
             </Routes>
         )
         : (<Routes>
@@ -58,7 +57,7 @@ const Switcher = (props) => {
             <Route path="/myprofile" element={<Navigate replace to="/login"/>}/>
             <Route path="/profile" element={<UserProfile/>}/>
             <Route path="/" element={<Home/>}/>
-            <Route path="*" element={<div>Страница не найдена!</div>}/>
+            <Route path="*" element={<NotFound/>}/>
         </Routes>);
 };
 

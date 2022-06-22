@@ -1,8 +1,10 @@
 import {ADD_STUDENT, AUTH, EDIT_SUPERVISOR, LOGOUT, REGISTRATION} from "../actions/actions";
-import {getBindingUser} from "../../constants/users";
+import {getBindingUser, getNotification} from "../../constants/users";
+import {getPercent} from "../../constants/table";
 
 const initialState = {
-    users: []
+    users: [],
+    notifications: []
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -10,6 +12,10 @@ const profileReducer = (state = initialState, action) => {
         case AUTH:
             let bindUser = getBindingUser(action.payload);
             state.users = bindUser;
+            state.notifications = getNotification(action.payload)
+            state.users.map((user) => {
+                user.percent = getPercent(user.id)
+            })
             return state;
         case REGISTRATION:
             return state;

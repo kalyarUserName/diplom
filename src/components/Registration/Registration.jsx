@@ -9,6 +9,7 @@ const Registration = (props) => {
     const dispatch = useDispatch();
     const [name, setName] = useState("");
     const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [teacher, setTeacher] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
@@ -16,6 +17,7 @@ const Registration = (props) => {
         const regData = {
             name: name,
             userName: userName,
+            email: email,
             password: password,
             teacher: teacher
         };
@@ -39,6 +41,9 @@ const Registration = (props) => {
                                margin="dense" fullWidth required onChange={(e) => setUserName(e.target.value)}
                                value={userName}/>
                     <TextField margin="dense" label="Фамилия Имя Отчество" placeholder="Введите Фамилию Имя Отчество"
+                               type="text"
+                               fullWidth required onChange={(e) => setName(e.target.value)} value={name}/>
+                    <TextField margin="dense" label="Email" placeholder="Введите email"
                                type="email"
                                fullWidth required onChange={(e) => setName(e.target.value)} value={name}/>
                     <TextField margin="dense" label="Пароль" placeholder="Введите пароль" type="password"

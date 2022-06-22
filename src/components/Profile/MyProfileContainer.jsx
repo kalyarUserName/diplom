@@ -1,14 +1,11 @@
 import {connect} from "react-redux";
 import MyProfile from "./MyProfile";
 
-
 const mapStateToProps = (state) => {
-    console.log("state:::: ", state);
-    console.log("state: users ", state.profile.users);
     return {
-        users: state.profile.users
+        users: state.profile.users,
+        notifications: state.profile.notifications
     }
-
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -14,6 +14,7 @@ const Login = (props) => {
     const [regData, setRegData] = useState({
         user: "",
         password: "",
+        email: ""
     });
 
     const handleChange = (e) => {
@@ -46,6 +47,9 @@ const Login = (props) => {
                     <TextField onChange={handleChange} name="user" margin="dense" label="Имя пользователя"
                                placeholder="Введите имя пользователя"
                                fullWidth required/>
+                    <TextField onChange={handleChange} name="email" margin="dense" label="Email"
+                               placeholder="Введите email"
+                               fullWidth required/>
                     <TextField onChange={handleChange} name="password" margin="dense" label="Пароль"
                                placeholder="Введите пароль" type="password"
                                fullWidth required/>
@@ -54,7 +58,8 @@ const Login = (props) => {
                     {/*              color="primary"*/}
                     {/*    />*/}
                     {/*} label="Запомнить пароль"/>*/}
-                    <Button className={s.button} onClick={handleSubmit} type="submit" color="primary" variant="contained" fullWidth>
+                    <Button className={s.button} onClick={handleSubmit} type="submit" color="primary"
+                            variant="contained" fullWidth>
                         Войти
                     </Button>
                     <Typography className={s.createAcc}>

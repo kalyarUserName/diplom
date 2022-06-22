@@ -30,8 +30,11 @@ let bindingUser = [
     {id: 1, users: [4]},
     {id: 2, users: [3]},
     {id: 3, users: [2]},
-    {id: 4, users: [1, 5]},
+    {id: 4, users: [1, 5, 7, 8, 9, 10]},
     {id: 5, users: [4]}
+]
+let notifications = [
+    {id: 4, users: [5, 8, 10]}
 ]
 export let users = [
     {
@@ -45,11 +48,17 @@ export let users = [
             course: "4 курс",
             spec: "Фундаментальная информатика и ИКТ",
             supervisor: "Майер Светлана Федоровна",
-            avatar: 'src/avatar.jpg'
-        }
+        },
+        avatar: "/images/ava5.jpg"
     },
-    {id: 2, userName: "sys", name: "Сысоев Альфред Феликсович", password: "1111", Teacher: true, aboutUser: {}},
-    {id: 3, userName: "Lytkin", name: "Лыткин Григорий Куприянович", password: "2222", Teacher: false, aboutUser: {}},
+    {
+        id: 2, userName: "sysoev", name: "Сысоев Альфред Феликсович", password: "1111", Teacher: true, aboutUser: {},
+        avatar: "/images/ava3.jpg"
+    },
+    {
+        id: 3, userName: "Lytkin", name: "Лыткин Григорий Куприянович", password: "2222", Teacher: false, aboutUser: {},
+        avatar: "/images/ava4.jpg"
+    },
     {
         id: 4,
         userName: "mayer",
@@ -60,7 +69,8 @@ export let users = [
             kafedra: "Кафедра информатики и вычислительного эксперимента",
             rank: "Старший преподаватель",
             spec: "Фундаментальная информатика и ИКТ"
-        }
+        },
+        avatar: "/images/ava1.jpg"
     },
     {
         id: 5,
@@ -72,11 +82,59 @@ export let users = [
             kafedra: "Кафедра алгебры и дискретной математики",
             course: "2 курс",
             spec: "Фундаментальная информатика и ИКТ",
-            supervisor: "Майер Светлана Федоровна"
-        }
+            supervisor: "Майер Светлана Федоровна",
+            rank: "Старший преподаватель",
+        },
+        avatar: "/images/ava4.jpg"
+
+
     },
-    {id: 6, userName: "newUser", name: "Иванов Иван Иванович", password: "1111", Teacher: false, aboutUser: {}},
-    {id: 7, userName: "qwer", name: "Иванов Петр Иванович", password: "0000", Teacher: false, aboutUser: {}},
+    {
+        id: 6,
+        userName: "newUser",
+        name: "Иванов Иван Иванович",
+        password: "1111",
+        Teacher: false,
+        aboutUser: {},
+        avatar: "/images/ava_men_1.jpg"
+    },
+    {
+        id: 7,
+        userName: "qwer",
+        name: "Иванов Петр Иванович",
+        password: "0000",
+        Teacher: false,
+        aboutUser: {},
+        avatar: "/images/ava_men_2.jpg"
+    },
+    {
+        id: 8,
+        userName: "qwer1",
+        name: "Коновалов Парамон Артемович",
+        password: "0000",
+        Teacher: false,
+        aboutUser: {},
+        avatar: "/images/ava_men_3.jpg"
+    },
+    {
+        id: 9,
+        userName: "qwer2",
+        name: "Ширяев Остап Евсеевич",
+        password: "0000",
+        Teacher: false,
+        aboutUser: {},
+        avatar: "/images/ava_men_4.jpg"
+    },
+    {
+        id: 10,
+        userName: "qwer3",
+        name: "Карпов Венедикт Германнович",
+        password: "0000",
+        Teacher: false,
+        aboutUser: {},
+        avatar: "/images/ava_men_5.jpg"
+    },
+    {id: 11, userName: "qwer4", name: "Русаков Юстин Адольфович", password: "0000", Teacher: false, aboutUser: {}},
 
 ]
 
@@ -86,6 +144,7 @@ export function getUserFromDB(userName, password) {
         )
     )
 }
+
 
 export function getMessage(user1, user2) {
     const MoreUser1 = getUserFromDBID(user1);
@@ -106,7 +165,6 @@ export function getMessage(user1, user2) {
 }
 
 export function getUserFromDBID(id) {
-    console.log("getUserFromDBID", id)
     return users.find((user) => user.id === id)
 }
 
@@ -126,18 +184,26 @@ export function getBindingUser(payload) {
     let res = [];
     let curUser = getUserFromDBWithoutPass(payload.user);
     if (curUser) {
-        console.log("curUser", curUser);
         let bindingUsers = bindingUser.find((user) => user.id == curUser.id)
         if (bindingUsers) {
-            console.log("bindingUsers", bindingUsers);
             bindingUsers.users.map((id) => {
                 res.push(getUserFromDBID(id))
             })
-            console.log("res", res);
             res.map((bindingU) => {
                 bindingU.password = ''
             })
         }
     }
     return res;
+}
+
+export function getNotification(payload) {
+    console.log("getNotification", payload)
+    let curUser = getUserFromDBWithoutPass(payload.user);
+    if (curUser) {
+        let res = notifications.find((user) => user.id === curUser.id);
+        if (res)
+            return res.users;
+    }
+    return [];
 }

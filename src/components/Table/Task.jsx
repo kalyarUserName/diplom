@@ -83,7 +83,7 @@ const Task = ({name, desc, startDate, endDate, status}) => {
                             label="Дата начала"
                             type="date"
                             value={startDateF}
-                            sx={{width: 220}}
+                            sx={{width: 220, mb: 2}}
                             InputLabelProps={
                                 {
                                     shrink: true,
@@ -91,6 +91,7 @@ const Task = ({name, desc, startDate, endDate, status}) => {
                                 }
                             }
                         />
+
                         <TextField
                             id="date"
                             label="Дата окончания"

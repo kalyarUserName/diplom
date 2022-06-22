@@ -14,7 +14,7 @@ export let tasks = [
         id: 2,
         user: 1,
         name: "Задание 2",
-        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        desc: "Заполнить базу данных задачами для пользователя 1",
         status: "none",
         startDate: "2022-03-04",
         endDate: "2022-05-03"
@@ -64,6 +64,150 @@ export let tasks = [
         startDate: "2022-03-04",
         endDate: "2022-05-03"
     },
+    {
+        id: 8,
+        user: 10,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "done",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 9,
+        user: 10,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "edit",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 10,
+        user: 10,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "cancel",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 11,
+        user: 10,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "done",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 12,
+        user: 9,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "done",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 13,
+        user: 9,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "done",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 14,
+        user: 9,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "edit",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 15,
+        user: 8,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "edit",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 16,
+        user: 8,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "edit",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 17,
+        user: 8,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "cancel",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 18,
+        user: 7,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "cancel",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 19,
+        user: 7,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "cancel",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 20,
+        user: 7,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "edit",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 21,
+        user: 5,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "edit",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 22,
+        user: 5,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "edit",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
+    {
+        id: 23,
+        user: 5,
+        name: "Задание 2",
+        desc: "Описание задания 2. Нужно выполнить задание 2 в строго заданной форме",
+        status: "done",
+        startDate: "2022-03-04",
+        endDate: "2022-05-03"
+    },
 ]
 
 export function getTasks(id) {
@@ -71,6 +215,49 @@ export function getTasks(id) {
     tasks.map((task) => {
         if (task.user == id)
             res.push(task);
+    })
+    return res;
+}
+
+export function getPercent(id) {
+    let tasksCount = 0;
+    let res = 0;
+    let tasks = getTasks(id);
+    tasks.map((task) => {
+        tasksCount++;
+        if (task.status === "done") {
+            res += 2;
+        }
+        if (task.status === "edit") {
+            res += 1;
+        }
+    })
+    return (res / (2 * tasksCount) * 100).toFixed(1);
+}
+
+export function getCountSplitTask(id) {
+    let res = {
+        done: 0,
+        cancel: 0,
+        edit: 0,
+        none: 0
+    };
+    let tasks = getTasks(id);
+    tasks.map((task) => {
+        switch (task.status) {
+            case 'done':
+                res.done++;
+                break;
+            case 'cancel':
+                res.cancel++;
+                break;
+            case 'edit' :
+                res.edit++;
+                break;
+            default:
+                res.none++;
+                break;
+        }
     })
     return res;
 }

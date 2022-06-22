@@ -14,3 +14,15 @@
     margin: 10px 5px 10px 5px !important;
     padding: 5px !important;
 }
+
+.studsName {
+    display: flex;
+}
+
+.splitTasks {
+    display: flex;
+}
+
+.taskIcon {
+    margin-right: 10px;
+}
