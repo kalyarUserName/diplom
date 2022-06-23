@@ -1,5 +1,5 @@
 import {ADD_STUDENT, AUTH, EDIT_SUPERVISOR, LOGOUT, REGISTRATION} from "../actions/actions";
-import {getBindingUser, getNotification} from "../../constants/users";
+import {getBindingUser, getNotification, getUserFromDBWithoutPass} from "../../constants/users";
 import {getPercent} from "../../constants/table";
 
 const initialState = {
@@ -23,10 +23,12 @@ const profileReducer = (state = initialState, action) => {
             state.users = initialState;
             return state;
         case ADD_STUDENT:
-            state.users.push({id: action.id, userName: action.userName})
+            let user = getUserFromDBWithoutPass(action.payload.userName);
+            user.percent = getPercent(user.id);
+            state.users.push(user);
             return state;
         case EDIT_SUPERVISOR:
-            state.users = [{id: action.id, userName: action.userName}]
+            state.users = [{id: action.payload.id, userName: action.payload.userName}];
             return state;
         default:
             return state;

@@ -3,7 +3,6 @@ import {Typography} from "@mui/material";
 import UserBar from "./Userbar";
 
 const TeacherProfile = (props) => {
-    console.log("TeacherProfile props", props);
     return (
         <div>
             <Typography align="justify" variant="h5">

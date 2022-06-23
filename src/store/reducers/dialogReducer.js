@@ -1,26 +1,29 @@
-import {AUTH, CHANGE_MESSAGE, SEND_MESSAGE} from "../actions/actions"
+import {AUTH, CHANGE_MESSAGE, OPEN_DIALOGS, SEND_MESSAGE} from "../actions/actions"
+import {getMessagesFromDB, getUserFromDB} from "../../constants/users";
 
 let initialState = {
     dialogs: [],
-    messages: [
-        {user: {id: 1, userName: "Завражный Кирилл Юрьевич"}, message: 'Здравствуйте. Светлана Федоровна'},
-        {user: {id: 9, userName: "Майер Светлана Федоровна"}, message: 'Здравствуйте. Кирилл'},
-        {user: {id: 1, userName: "Завражный Кирилл Юрьевич"}, message: 'Разработка веб приложения идет полным ходом'},
-        {user: {id: 9, userName: "Майер Светлана Федоровна"}, message: 'Да, я уже увидела'},
-    ],
+    messages: [],
     newMessage: ""
 }
 //
 const dialogReducer = (state = initialState, action) => {
     switch (action.type) {
         case AUTH:
+            const potentialUser = getUserFromDB(action.payload.user, action.payload.password);
+            if (potentialUser !== undefined) {
+                state.messages = getMessagesFromDB(potentialUser.id);
+            }
             return state;
         case SEND_MESSAGE:
-            state.messages.push({user: action.user, message: action.message});
+            state.messages.push({user: action.userFrom, message: action.message});
             state.newMessage = "";
             return state;
         case CHANGE_MESSAGE:
             state.newMessage = action.payload;
+            return state;
+        case OPEN_DIALOGS:
+            state.messages = getMessagesFromDB(action.payload);
             return state;
         default:
             return state;

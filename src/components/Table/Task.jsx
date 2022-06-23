@@ -47,13 +47,13 @@ const Task = ({name, desc, startDate, endDate, status}) => {
                         {nameF}
                     </Typography>
                     <IconButton component={EditIcon} onClick={(e) => onEdit(e)} className={s.editIcon}/>
-                    <Typography align="justify" variant="h6" className={s.desc}>
+                    <Typography align="left" variant="h6" className={s.desc}>
                         Описание: {descF}
                     </Typography>
-                    <Typography align="justify" variant="p">
+                    <Typography align="left" variant="p">
                         Начало {startDateF} {" "}
                     </Typography>
-                    <Typography align="left" variant="p">
+                    <Typography align="right" variant="p">
                         Конец {endDateF}
                     </Typography>
                 </Paper>
@@ -87,9 +87,9 @@ const Task = ({name, desc, startDate, endDate, status}) => {
                             InputLabelProps={
                                 {
                                     shrink: true,
-
                                 }
                             }
+                            onChange={(e) => setStartDateF(e.target.value)}
                         />
 
                         <TextField
@@ -101,6 +101,7 @@ const Task = ({name, desc, startDate, endDate, status}) => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            onChange={(e) => setEndDateF(e.target.value)}
                         />
                     </div>
                 </Paper>

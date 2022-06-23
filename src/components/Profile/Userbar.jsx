@@ -15,7 +15,6 @@ const UserBar = (props) => {
     else if (props.percent <= 55)
         statusIcon = <SentimentNeutralIcon sx={{color: '#e2d500'}}/>;
     else statusIcon = <SentimentSatisfiedIcon sx={{color: 'green'}}/>;
-    console.log("UserBar", props);
     return (
         <Box sx={{p: 2}} className={s.userBar} bgcolor={props.notification ? "#FFCBDB" : ""}>
             <Stack spacing={0.5} width="100%">

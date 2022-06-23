@@ -1,5 +1,12 @@
-import {AUTH, LOGOUT, REGISTRATION} from "../actions/actions";
-import {getUserFromDB, users} from "../../constants/users";
+import {ADD_STUDENT, ADD_SUPERVISOR, AUTH, EDIT_PROFILE, LOGOUT, REGISTRATION, SEND_MESSAGE} from "../actions/actions";
+import {
+    addBindToDB,
+    addNewUserToDB,
+    editProfileToDB,
+    getUserFromDB,
+    sendMessageToDB,
+    users
+} from "../../constants/users";
 
 const user = JSON.parse(localStorage.getItem("userInfo")) || {
     user: {},
@@ -37,11 +44,26 @@ const generalReducer = (state = initialState, action) => {
             }
             state.Teacher = action.payload.teacher;
             state.authS = true;
-            users.push(state.currentUser);
+            addNewUserToDB(state.currentUser);
             return state;
         case LOGOUT:
             state = initialState;
             localStorage.removeItem('auth');
+            return state;
+        case EDIT_PROFILE:
+            state.currentUser.aboutUser.name = action.payload.name;
+            state.currentUser.aboutUser.kafedra = action.payload.kafedra;
+            state.currentUser.aboutUser.rank = action.payload.rank;
+            editProfileToDB(state.currentUser);
+            return state;
+        case ADD_STUDENT:
+            addBindToDB(state.currentUser.id, action.payload.id);
+            return state;
+        case ADD_SUPERVISOR:
+            addBindToDB(action.payload.id, state.currentUser.id);
+            return state;
+        case SEND_MESSAGE:
+            sendMessageToDB(action.userFrom, action.userTo, action.message);
             return state;
         default:
             return state;

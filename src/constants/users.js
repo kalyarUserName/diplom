@@ -30,11 +30,13 @@ let bindingUser = [
     {id: 1, users: [4]},
     {id: 2, users: [3]},
     {id: 3, users: [2]},
-    {id: 4, users: [1, 5, 7, 8, 9, 10]},
-    {id: 5, users: [4]}
+    {id: 4, users: [1, 5, 7, 8]},
+    {id: 5, users: [4]},
+    {id: 7, users: [4]},
+    {id: 8, users: [4]},
 ]
 let notifications = [
-    {id: 4, users: [5, 8, 10]}
+    {id: 4, users: [5, 8]}
 ]
 export let users = [
     {
@@ -49,15 +51,20 @@ export let users = [
             spec: "Фундаментальная информатика и ИКТ",
             supervisor: "Майер Светлана Федоровна",
         },
-        avatar: "/images/ava5.jpg"
+        avatar: "/images/zavrazny.jpg"
     },
     {
         id: 2, userName: "sysoev", name: "Сысоев Альфред Феликсович", password: "1111", Teacher: true, aboutUser: {},
         avatar: "/images/ava3.jpg"
     },
     {
-        id: 3, userName: "Lytkin", name: "Лыткин Григорий Куприянович", password: "2222", Teacher: false, aboutUser: {},
-        avatar: "/images/ava4.jpg"
+        id: 3, userName: "Lytkin", name: "Лыткин Григорий Куприянович", password: "2222", Teacher: false,
+        aboutUser: {
+            kafedra: "Кафедра информатики и вычислительного эксперимента",
+            course: "2 курс",
+            spec: "Фундаментальная информатика и ИКТ",
+            supervisor: "Сысоев Альфред Феликсович",
+        }, avatar: "/images/ava4.jpg"
     },
     {
         id: 4,
@@ -70,7 +77,7 @@ export let users = [
             rank: "Старший преподаватель",
             spec: "Фундаментальная информатика и ИКТ"
         },
-        avatar: "/images/ava1.jpg"
+        avatar: "/images/svetlana_fedorovna.jpg"
     },
     {
         id: 5,
@@ -104,7 +111,12 @@ export let users = [
         name: "Иванов Петр Иванович",
         password: "0000",
         Teacher: false,
-        aboutUser: {},
+        aboutUser: {
+            kafedra: "Кафедра информатики и вычислительного эксперимента",
+            course: "1 курс",
+            spec: "Фундаментальная информатика и ИКТ",
+            supervisor: "Майер Светлана Федоровна",
+        },
         avatar: "/images/ava_men_2.jpg"
     },
     {
@@ -113,7 +125,12 @@ export let users = [
         name: "Коновалов Парамон Артемович",
         password: "0000",
         Teacher: false,
-        aboutUser: {},
+        aboutUser: {
+            kafedra: "Кафедра информатики и вычислительного эксперимента",
+            course: "2 курс",
+            spec: "Фундаментальная информатика и ИКТ",
+            supervisor: "Майер Светлана Федоровна",
+        },
         avatar: "/images/ava_men_3.jpg"
     },
     {
@@ -145,33 +162,34 @@ export function getUserFromDB(userName, password) {
     )
 }
 
-
-export function getMessage(user1, user2) {
-    const MoreUser1 = getUserFromDBID(user1);
-    const MoreUser2 = getUserFromDBID(user2);
+export function getMessageMatchFromDB(user1, user2) {
     let resMessages = [];
     messages.map((mes) => {
             if (((user1 == mes.userfrom.id) && (user2 == mes.user.id)) || (user2 == mes.userfrom.id) && (user1 == mes.user.id))
                 resMessages.push({user: mes.userfrom, message: mes.message})
-            // if ((user1 == mes.userfrom.id) && (user2 == mes.user.id)) {
-            //     resMessages.push({user: {id: MoreUser2.id, userName: MoreUser2.name}, message: mes.message});
-            // }
-            // if ((user2 == mes.userfrom.id) && (user1 == mes.user.id)) {
-            //     resMessages.push({user: {id: MoreUser1.id, userName: MoreUser1.name}, message: mes.message});
         }
     )
-    console.log("getMessage resMessages", resMessages);
+    console.log("getMessageMatchFromDB res", resMessages);
     return resMessages;
 }
 
+export function getMessagesFromDB(userID) {
+
+    let mess = [];
+    messages.map(mes => {
+        if (userID == mes.user.id || userID == mes.userfrom.id)
+            mess.push(mes);
+    })
+    console.log("getMessagesFromDB res", mess);
+    return mess;
+}
+
 export function getUserFromDBID(id) {
-    return users.find((user) => user.id === id)
+    return users.find((user) => user.id == id)
 }
 
 export function getUserNameFromDBID(id) {
     return users.find((user) => user.id == id)
-    // let user = users.find((user) => user.id == id)
-    // return {id: user.id, userName: user.name};
 }
 
 export function getUserFromDBWithoutPass(userName) {
@@ -198,7 +216,6 @@ export function getBindingUser(payload) {
 }
 
 export function getNotification(payload) {
-    console.log("getNotification", payload)
     let curUser = getUserFromDBWithoutPass(payload.user);
     if (curUser) {
         let res = notifications.find((user) => user.id === curUser.id);
@@ -206,4 +223,59 @@ export function getNotification(payload) {
             return res.users;
     }
     return [];
+}
+
+export function getFreeStudents() {
+    let result = [];
+    users.map((user) => {
+        if (!user.Teacher && user.aboutUser.supervisor === undefined) {
+            result.push({id: user.id, name: user.name, userName: user.userName})
+        }
+    })
+    return result;
+}
+
+export function getSupervisors() {
+    let result = [];
+    users.map((user) => {
+        if (user.Teacher) {
+            result.push({id: user.id, name: user.name, userName: user.userName})
+        }
+    })
+    return result;
+}
+
+export function addBindToDB(supervisorID, studentID) {
+    let flag = false;
+    bindingUser.map(user => {
+        if (user.id === supervisorID) {
+            user.users.push(studentID);
+            flag = true;
+        }
+    })
+    if (flag)
+        bindingUser.push({id: supervisorID, users: {studentID}});
+    users.map(user => {
+        if (user.id === studentID) {
+            user.aboutUser.supervisor = getUserFromDBID(supervisorID).name;
+        }
+    });
+}
+
+export function editProfileToDB(editUser) {
+    let editionUser = users.find((user) => user.id === editUser.id);
+    editionUser.name = editUser.name;
+    editionUser.aboutUser = editUser.aboutUser;
+}
+
+export function addNewUserToDB(user) {
+    users.push(user);
+}
+
+export function sendMessageToDB(userFrom, userTo, message) {
+    messages.push({
+        userfrom: {id: userFrom.id, userName: userFrom.userName},
+        user: {id: userTo.id, userName: userTo.userName},
+        message: message
+    });
 }

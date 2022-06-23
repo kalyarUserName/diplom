@@ -12,5 +12,5 @@ export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const ADD_WORK = 'ADD_WORK';
 export const EDIT_WORK = 'EDIT_WORK';
 export const CHANGE_MESSAGE = 'CHANGE_MESSAGE';
-
-
+export const EDIT_PROFILE = 'EDIT_PROFILE';
+export const OPEN_DIALOGS = 'OPEN_DIALOGS';

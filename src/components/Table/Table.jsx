@@ -26,7 +26,7 @@ const Table = ({document}) => {
                     <div className={s.studsName}>
 
                         <h2>Задачи {stud.name}</h2>
-                        <Avatar className={s.docIcon} variant="circular" src={stud.avatar}/>
+                        <Avatar className={s.avatar} variant="circular" src={stud.avatar}/>
                     </div>
 
                     <div className={s.tasks}>
