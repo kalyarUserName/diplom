@@ -169,7 +169,6 @@ export function getMessageMatchFromDB(user1, user2) {
                 resMessages.push({user: mes.userfrom, message: mes.message})
         }
     )
-    console.log("getMessageMatchFromDB res", resMessages);
     return resMessages;
 }
 
@@ -180,7 +179,6 @@ export function getMessagesFromDB(userID) {
         if (userID == mes.user.id || userID == mes.userfrom.id)
             mess.push(mes);
     })
-    console.log("getMessagesFromDB res", mess);
     return mess;
 }
 
@@ -248,7 +246,7 @@ export function getSupervisors() {
 export function addBindToDB(supervisorID, studentID) {
     let flag = false;
     bindingUser.map(user => {
-        if (user.id === supervisorID) {
+        if (!flag && user.id === supervisorID) {
             user.users.push(studentID);
             flag = true;
         }

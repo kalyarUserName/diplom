@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Avatar,
     Typography,
@@ -23,7 +23,11 @@ import {getFreeStudents, getSupervisors, getUserFromDBWithoutPass} from "../../c
 import {useDispatch} from "react-redux";
 import {logoutActionCreator} from "../../store/actionCreators/authActionCreator";
 import {Navigate} from "react-router-dom";
-import {addStudentActionCreator, editProfileActionCreator} from "../../store/actionCreators/profileActionCreator";
+import {
+    addStudentActionCreator,
+    addSupervisorActionCreator,
+    editProfileActionCreator
+} from "../../store/actionCreators/profileActionCreator";
 
 const MyProfile = (props) => {
     let state = store.getState().general;
@@ -37,22 +41,34 @@ const MyProfile = (props) => {
     const [kafedra, setKafedra] = useState(curUser.aboutUser.kafedra);
     const [newStudent, setNewStudent] = useState('');
     const [isAddStudent, setIsAddStudent] = useState(false);
-
+    const [potentialUsers, setPotentialUsers] = useState([]);
+    useEffect(() => {
+        if (isTeacher)
+            setPotentialUsers(getFreeStudents())
+        else
+            setPotentialUsers(getSupervisors());
+    }, [isAddStudent])
     let dispatch = useDispatch();
     const logout = () => {
         dispatch(logoutActionCreator())
         return <Navigate to={"/login"}/>
     }
     const addStudent = () => {
-        if (isAddStudent)
-            dispatch(addStudentActionCreator(getFreeStudents().find(stud => stud.name === newStudent)))
+        if (isAddStudent) {
+            dispatch(addStudentActionCreator(potentialUsers.find(stud => stud.name === newStudent)));
+            setNewStudent('');
+        }
         setIsAddStudent(!isAddStudent);
     }
     const changeSelector = (event) => {
         setNewStudent(event.target.value);
     }
     const addSupervisor = () => {
-        console.log('add supervisor', getSupervisors());
+        if (isAddStudent) {
+            dispatch(addSupervisorActionCreator(potentialUsers.find(stud => stud.name === newStudent)))
+            setNewStudent('');
+        }
+        setIsAddStudent(!isAddStudent);
     }
     const edition = (event) => {
         if (isEdit) {
@@ -134,24 +150,23 @@ const MyProfile = (props) => {
                         <Typography variant="h5" align="center">
                             Южный Федеральный Университет
                         </Typography>
-
+                        {isAddStudent && <FormControl sx={{m: 2, minWidth: 200}}>
+                            <InputLabel id="FIO_label">Фамилия Имя Отчество</InputLabel>
+                            <Select
+                                labelId="FIO_label"
+                                id="FIO"
+                                value={newStudent}
+                                onChange={changeSelector}
+                                autoWidth
+                                label="ФИО"
+                            >
+                                {potentialUsers.map((stud, index) =>
+                                    (<MenuItem key={index} value={stud.name}>{stud.name}</MenuItem>)
+                                )}
+                            </Select>
+                        </FormControl>}
                         {
                             isTeacher ? <div>
-                                    {isAddStudent && <FormControl sx={{m: 2, minWidth: 200}}>
-                                        <InputLabel id="FIO_label">Фамилия Имя Отчество</InputLabel>
-                                        <Select
-                                            labelId="FIO_label"
-                                            id="FIO"
-                                            value={newStudent}
-                                            onChange={changeSelector}
-                                            autoWidth
-                                            label="ФИО"
-                                        >
-                                            {getFreeStudents().map((stud, index) =>
-                                                (<MenuItem key={index} value={stud.name}>{stud.name}</MenuItem>)
-                                            )}
-                                        </Select>
-                                    </FormControl>}
                                     <Button variant="outlined" onClick={addStudent} className={s.addButton}>
                                         Добавить ученика
                                     </Button>

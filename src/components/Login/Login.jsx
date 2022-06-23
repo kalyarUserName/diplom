@@ -32,7 +32,6 @@ const Login = (props) => {
 
     };
     if(isAuth) {
-        console.log("LOGIN isAUTH", isAuth, regData)
         localStorage.setItem("auth", JSON.stringify(regData));
         return <Navigate to={"/myprofile"}/>
     }
