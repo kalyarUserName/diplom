@@ -6,6 +6,8 @@ import {Link as LinkRouterDom, Navigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {authActionCreator} from "../../store/actionCreators/authActionCreator";
 import store from "../../store/store";
+import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
+
 
 const Login = (props) => {
     const dispatch = useDispatch();
@@ -22,16 +24,25 @@ const Login = (props) => {
         setRegData({...regData, [name]: value});
     };
     const handleSubmit = () => {
-        dispatch(authActionCreator(regData));
-        setUser(store.getState().general);
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, regData.email, regData.password)
+            .then(({user}) => {
+                dispatch(authActionCreator(regData));
+                setUser(store.getState().general);
+                setIsAuth(User.authS);
+                props.setAuth(true);
+                localStorage.setItem("auth", JSON.stringify(regData));
+            }).catch(() => alert('Пользовательные данные некорректны'));
+        //  dispatch(authActionCreator(regData));
+        //  setUser(store.getState().general);
         // console.log("LOGIN auth before", isAuth, regData)
-        setIsAuth(User.authS);
+        //   setIsAuth(User.authS);
         // console.log("LOGIN auth before", isAuth, regData)
-        props.setAuth(true);
-        localStorage.setItem("auth", JSON.stringify(regData));
+        //   props.setAuth(true);
+        //  localStorage.setItem("auth", JSON.stringify(regData));
 
     };
-    if(isAuth) {
+    if (isAuth) {
         localStorage.setItem("auth", JSON.stringify(regData));
         return <Navigate to={"/myprofile"}/>
     }
@@ -52,11 +63,6 @@ const Login = (props) => {
                     <TextField onChange={handleChange} name="password" margin="dense" label="Пароль"
                                placeholder="Введите пароль" type="password"
                                fullWidth required/>
-                    {/*<FormControlLabel control={*/}
-                    {/*    <Checkbox name="checkedB"*/}
-                    {/*              color="primary"*/}
-                    {/*    />*/}
-                    {/*} label="Запомнить пароль"/>*/}
                     <Button className={s.button} onClick={handleSubmit} type="submit" color="primary"
                             variant="contained" fullWidth>
                         Войти

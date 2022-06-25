@@ -41,7 +41,8 @@ const Header = (props) => {
                                 </div>
                                 : <div>
                                     <IconButton className={s.loginAndReg}>
-                                        <Avatar component={Link} to="/myprofile" src={curUser.avatar}/>
+                                        <Avatar component={Link} to="/myprofile"
+                                                src={curUser === undefined ? "" : curUser.avatar}/>
                                     </IconButton>
                                 </div>}
                         </Grid>

@@ -1,9 +1,8 @@
-// let messages = [
-//     {user1: 1, user2: 4, message: 'Здравствуйте. Светлана Федоровна'},
-//     {user1: 4, user2: 1, message: 'Здравствуйте. Кирилл'},
-//     {user1: 1, user2: 4, message: 'Разработка веб приложения идет полным ходом'},
-//     {user1: 4, user2: 1, message: 'Да, я уже увидела'},
-// ]
+import {doc, getDoc} from "firebase/firestore";
+
+import {tasks} from "./table";
+import {db} from "../firebase";
+
 export let messages = [
     {
         userfrom: {id: 1, userName: "Завражный Кирилл Юрьевич"},
@@ -38,11 +37,26 @@ let bindingUser = [
 let notifications = [
     {id: 4, users: [5, 8]}
 ]
+
+export function getUserName(id) {
+    return users.find(user => user.id == id).userName;
+}
+
+export function getTask(idUser) {
+    let res = [];
+    tasks.map(task => {
+        if (task.user == idUser)
+            res.push(task);
+    })
+    return res;
+}
+
 export let users = [
     {
         id: 1,
         userName: "zavr",
         name: "Завражный Кирилл Юрьевич",
+        email: "zavrazhny@sfedu.ru",
         password: "0000",
         Teacher: false,
         aboutUser: {
@@ -54,23 +68,36 @@ export let users = [
         avatar: "/images/zavrazny.jpg"
     },
     {
-        id: 2, userName: "sysoev", name: "Сысоев Альфред Феликсович", password: "1111", Teacher: true, aboutUser: {},
+        id: 2,
+        userName: "sysoev",
+        email: "sysoev@sfedu.ru",
+        name: "Сысоев Альфред Феликсович",
+        password: "1111",
+        Teacher: true,
+        aboutUser: {},
         avatar: "/images/ava3.jpg"
     },
     {
-        id: 3, userName: "Lytkin", name: "Лыткин Григорий Куприянович", password: "2222", Teacher: false,
+        id: 3,
+        userName: "Lytkin",
+        email: "lytkin@sfedu.ru",
+        name: "Лыткин Григорий Куприянович",
+        password: "2222",
+        Teacher: false,
         aboutUser: {
             kafedra: "Кафедра информатики и вычислительного эксперимента",
             course: "2 курс",
             spec: "Фундаментальная информатика и ИКТ",
             supervisor: "Сысоев Альфред Феликсович",
-        }, avatar: "/images/ava4.jpg"
+        },
+        avatar: "/images/ava4.jpg"
     },
     {
         id: 4,
         userName: "mayer",
+        email: "mayer@sfedu.ru",
         name: "Майер Светлана Федоровна",
-        password: "0000",
+        password: "111111",
         Teacher: true,
         aboutUser: {
             kafedra: "Кафедра информатики и вычислительного эксперимента",
@@ -82,6 +109,7 @@ export let users = [
     {
         id: 5,
         userName: "mamont",
+        email: "mamont@sfedu.ru",
         name: "Мамонтов Ефим Федосеевич",
         password: "0000",
         Teacher: false,
@@ -99,6 +127,7 @@ export let users = [
     {
         id: 6,
         userName: "newUser",
+        email: "newUser@sfedu.ru",
         name: "Иванов Иван Иванович",
         password: "1111",
         Teacher: false,
@@ -108,6 +137,7 @@ export let users = [
     {
         id: 7,
         userName: "qwer",
+        email: "qwer@sfedu.ru",
         name: "Иванов Петр Иванович",
         password: "0000",
         Teacher: false,
@@ -122,6 +152,7 @@ export let users = [
     {
         id: 8,
         userName: "qwer1",
+        email: "qwer1@sfedu.ru",
         name: "Коновалов Парамон Артемович",
         password: "0000",
         Teacher: false,
@@ -136,6 +167,7 @@ export let users = [
     {
         id: 9,
         userName: "qwer2",
+        email: "qwer2@sfedu.ru",
         name: "Ширяев Остап Евсеевич",
         password: "0000",
         Teacher: false,
@@ -145,21 +177,46 @@ export let users = [
     {
         id: 10,
         userName: "qwer3",
+        email: "qwer3@sfedu.ru",
         name: "Карпов Венедикт Германнович",
         password: "0000",
         Teacher: false,
         aboutUser: {},
         avatar: "/images/ava_men_5.jpg"
     },
-    {id: 11, userName: "qwer4", name: "Русаков Юстин Адольфович", password: "0000", Teacher: false, aboutUser: {}},
+    {
+        id: 11, userName: "qwer4",
+        email: "qwer4@sfedu.ru",
+        name: "Русаков Юстин Адольфович",
+        password: "0000",
+        Teacher: false,
+        aboutUser: {},
+        avatar: "/images/ava_men_5.jpg"
+    },
 
 ]
 
 export function getUserFromDB(userName, password) {
-    return users.find((user) => (user.userName === userName
+    // return users.find((user) => (user.userName === userName
+    //         && user.password === password
+    //     )
+    // )
+    let user1 = users.find((user) => (user.userName === userName
             && user.password === password
         )
     )
+    console.log(user1);
+    return user1;
+    // const docRef = doc(db, "users", userName);
+    // const docSnap = await getDoc(docRef);
+    // console.log("docSnap getUserFromDB",docSnap._document.data.value.mapValue.fields)
+    // if (docSnap.exists()) {
+    //     return docSnap._document.data.value.mapValue.fields;
+    // } else {
+    //     // doc.data() will be undefined in this case
+    //     console.log("No such document!");
+    // }
+    // return null;
 }
 
 export function getMessageMatchFromDB(user1, user2) {

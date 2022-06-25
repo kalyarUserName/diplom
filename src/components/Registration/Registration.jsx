@@ -4,6 +4,7 @@ import s from "./Registration.module.css";
 import {Link as LinkRouterDom, Navigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {registerActionCreator} from "../../store/actionCreators/authActionCreator";
+import {getAuth, createUserWithEmailAndPassword} from "firebase/auth";
 
 const Registration = (props) => {
     const dispatch = useDispatch();
@@ -14,19 +15,29 @@ const Registration = (props) => {
     const [teacher, setTeacher] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
     const handleSubmit = (e) => {
-        const regData = {
-            name: name,
-            userName: userName,
-            email: email,
-            password: password,
-            teacher: teacher
-        };
-        console.log(regData)
-        dispatch(registerActionCreator(regData));
-        props.setAuth(true);
-        setIsAuth(true);
-        localStorage.setItem('auth', JSON.stringify(regData));
-        return <Navigate to={"/myprofile"}/>
+        const auth = getAuth();
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(({user}) => {
+                console.log('user from Firebase', user);
+                const regData = {
+                    id: user.uid,
+                    name: name,
+                    userName: userName,
+                    email: email,
+                    password: password,
+                    teacher: teacher,
+                    token: user.accessToken,
+                };
+                dispatch(registerActionCreator(regData));
+                props.setAuth(true);
+                setIsAuth(true);
+                localStorage.setItem('auth', JSON.stringify(regData));
+                return <Navigate to={"/myprofile"}/>
+            })
+            .catch((error) => {
+                alert('Пользовательные данные некорректны');
+            });
+
     };
 
     return (
@@ -45,7 +56,7 @@ const Registration = (props) => {
                                fullWidth required onChange={(e) => setName(e.target.value)} value={name}/>
                     <TextField margin="dense" label="Email" placeholder="Введите email"
                                type="email"
-                               fullWidth required onChange={(e) => setName(e.target.value)} value={name}/>
+                               fullWidth required onChange={(e) => setEmail(e.target.value)} value={email}/>
                     <TextField margin="dense" label="Пароль" placeholder="Введите пароль" type="password"
                                fullWidth required onChange={(e) => setPassword(e.target.value)} value={password}/>
                     <TextField margin="dense" label="Повтор пароля" placeholder="Повторите пароль"
@@ -58,7 +69,7 @@ const Registration = (props) => {
                     </FormGroup>
                     <Button className={s.button} type="submit" color="primary" variant="contained"
                             onClick={(e) => handleSubmit(e)}
-                            fullWidth>Войти</Button>
+                            fullWidth>Регистрация</Button>
                     <Typography className={s.existAcc}>
                         Уже есть аккаунт?
                         <Link component={LinkRouterDom} to="/login"> Войти </Link>

@@ -10,14 +10,14 @@ import {
 
 const user = JSON.parse(localStorage.getItem("userInfo")) || {
     user: {},
-    // token: "",
+    token: null,
 };
 
 let initialState = {
     currentUser: user.user,
     Teacher: false,
     aboutUser: {},
-    // token: user.token,
+    token: null,
     authS: false
 }
 
@@ -31,16 +31,17 @@ const generalReducer = (state = initialState, action) => {
                 state.Teacher = potentialUser.Teacher;
                 state.aboutUser = potentialUser.aboutUser;
                 state.authS = true;
-                //   state.token = action.payload.token;
+                state.token = action.payload.token;
             }
             return state;
         case REGISTRATION:
             state.currentUser = {
-                id: users[users.length - 1].id + 1,
+                // id: users[users.length - 1].id + 1,
+                id: action.payload.id,
                 name: action.payload.name,
                 userName: action.payload.userName,
-                password: action.payload.password,
-                Teacher: action.payload.teacher
+                Teacher: action.payload.teacher,
+                aboutUser: {}
             }
             state.Teacher = action.payload.teacher;
             state.authS = true;

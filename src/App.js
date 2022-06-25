@@ -7,6 +7,12 @@ import {Grid, Paper} from "@mui/material";
 import {authActionCreator} from "./store/actionCreators/authActionCreator";
 import {useDispatch, useStore} from "react-redux";
 
+import {collection, doc, setDoc, getDoc} from "firebase/firestore";
+import {db} from "./firebase";
+import {getTask, getUserName, messages, users} from "./constants/users";
+import {tasks} from "./constants/table";
+
+
 function App() {
     const [auth, setAuth] = useState(false);
     const [user, setUser] = useState('');
@@ -21,6 +27,42 @@ function App() {
             localStorage.removeItem('auth')
         }
     }
+
+    // async function addDataToDB(event) {
+    //     // const usersRef = collection(db, "users");
+    //     // const usersRef = collection(db, "dialogs");
+    //     const tasksRef = collection(db, "tasks");
+    //     users.forEach(async (user)=> {
+    //         await setDoc(doc(tasksRef, user.userName ), {
+    //             tasks:
+    //                 getTask(user.id)
+    //         })});
+    // users.forEach(async (user)=> {
+    //     await setDoc(doc(usersRef, user.userName ), {
+    //         id: user.id,
+    //         userName: user.userName,
+    //         name: user.name,
+    //         email: user.email,
+    //         password: user.password,
+    //         Teacher: user.Teacher,
+    //         aboutUser: user.aboutUser,
+    //         avatar: user.avatar,
+    //     });
+    // messages.forEach(async (mes)=>{
+    //     await setDoc(doc(usersRef, mes.userfrom.id ), {
+    //                messages: []
+    //             });
+    // })
+    // })
+    // await setDoc(doc(usersRef, 'zavr'), {
+    //     messages: messages
+    // });
+    // await setDoc(doc(usersRef, 'mayer'), {
+    //     messages: messages
+    // });
+
+    // }
+
     return (
         <div>
             <Header auth={auth} user={locAuth ? JSON.parse(locAuth).currentUser : 'Гость'}/>
@@ -40,6 +82,7 @@ function App() {
                     {/*        color: '#fff'*/}
                     {/*    }}/>*/}
                     {/*</IconButton>*/}
+                    {/*<button onClick={(event) => addDataToDB(event)}>add to db</button>*/}
                 </Paper>
             </Grid>
         </div>
