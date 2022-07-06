@@ -1,37 +1,74 @@
 import './App.css';
 import Header from "./components/Header/Header";
 import Switcher from "./components/Switcher/Switcher";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import s from "./components/Home/Home.module.css";
-import {Grid, IconButton, Paper} from "@mui/material";
-import {ChatOutlined} from '@mui/icons-material';
-import store from "./store/store";
+import {Grid, Paper} from "@mui/material";
+import {authActionCreator} from "./store/actionCreators/authActionCreator";
+import {useDispatch, useStore} from "react-redux";
 
-// import {createTheme} from '@mui/system';
+import {collection, doc, setDoc, getDoc} from "firebase/firestore";
+import {db} from "./firebase";
+import {getTask, getUserName, messages, users} from "./constants/users";
+import {tasks} from "./constants/table";
+
 
 function App() {
     const [auth, setAuth] = useState(false);
-    const [user, setUser] = useState('Гость');
+    const [user, setUser] = useState('');
+    const store = useStore();
+    const dispatch = useDispatch();
     let locAuth = localStorage.getItem('auth');
-    ;
-    //setIsAuth(store.getState().general.authS)
-    // const theme = createTheme({
-    //     palette: {
-    //         primary: '#1976d2',
-    //         secondary: '#fff',
-    //     },
+    if (locAuth && !auth) {
+        let AuthUser = JSON.parse(locAuth);
+        dispatch(authActionCreator({user: AuthUser.user, password: AuthUser.password}));
+        setAuth(store.getState().general.authS);
+        if (!store.getState().general.authS) {
+            localStorage.removeItem('auth')
+        }
+    }
+
+    // async function addDataToDB(event) {
+    //     // const usersRef = collection(db, "users");
+    //     // const usersRef = collection(db, "dialogs");
+    //     const tasksRef = collection(db, "tasks");
+    //     users.forEach(async (user)=> {
+    //         await setDoc(doc(tasksRef, user.userName ), {
+    //             tasks:
+    //                 getTask(user.id)
+    //         })});
+    // users.forEach(async (user)=> {
+    //     await setDoc(doc(usersRef, user.userName ), {
+    //         id: user.id,
+    //         userName: user.userName,
+    //         name: user.name,
+    //         email: user.email,
+    //         password: user.password,
+    //         Teacher: user.Teacher,
+    //         aboutUser: user.aboutUser,
+    //         avatar: user.avatar,
+    //     });
+    // messages.forEach(async (mes)=>{
+    //     await setDoc(doc(usersRef, mes.userfrom.id ), {
+    //                messages: []
+    //             });
+    // })
+    // })
+    // await setDoc(doc(usersRef, 'zavr'), {
+    //     messages: messages
     // });
-    useEffect(() => {
-        // locAuth = localStorage.getItem('auth');
-        if (localStorage.getItem('auth'))
-            setAuth(true);
-    }, [localStorage.getItem('auth')]);
+    // await setDoc(doc(usersRef, 'mayer'), {
+    //     messages: messages
+    // });
+
+    // }
+
     return (
         <div>
-            <Header auth={auth} user={JSON.parse(locAuth).currentUser}/>
+            <Header auth={auth} user={locAuth ? JSON.parse(locAuth).currentUser : 'Гость'}/>
             <Grid align="center">
                 <Paper elevation={10} className={s.paper}>
-                    <Switcher/>
+                    <Switcher setAuth={setAuth.bind()}/>
                     {/*<IconButton style={{*/}
                     {/*    background: '#1976d2',*/}
                     {/*    position: 'absolute',*/}
@@ -45,6 +82,7 @@ function App() {
                     {/*        color: '#fff'*/}
                     {/*    }}/>*/}
                     {/*</IconButton>*/}
+                    {/*<button onClick={(event) => addDataToDB(event)}>add to db</button>*/}
                 </Paper>
             </Grid>
         </div>

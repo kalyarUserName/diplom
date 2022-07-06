@@ -1,0 +1,35 @@
+.docIcon {
+    float: left;
+    width: 60px !important;
+    height: 60px !important;
+    margin-left: 10px !important;
+    position: static;
+}
+
+.tasks {
+    margin-top: 40px;
+}
+
+.task {
+    margin: 10px 5px 10px 5px !important;
+    padding: 5px !important;
+}
+
+.studsName {
+    display: flex;
+}
+
+.splitTasks {
+    display: flex;
+}
+
+.taskIcon {
+    margin-right: 10px;
+}
+
+.avatar {
+    margin-left: 50px;
+    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+}

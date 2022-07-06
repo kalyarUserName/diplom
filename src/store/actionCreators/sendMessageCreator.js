@@ -1,9 +1,10 @@
 import {SEND_MESSAGE} from "../actions/actions"
 
-export const sendMessageActionCreator = (user, message) => {
+export const sendMessageActionCreator = (userFrom, userTo, message) => {
     return {
         type: SEND_MESSAGE,
-        user: user,
+        userFrom: userFrom,
+        userTo: userTo,
         message: message
     }
 }

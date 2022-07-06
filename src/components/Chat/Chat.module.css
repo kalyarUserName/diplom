@@ -1,0 +1,47 @@
+.textBox {
+    width: 90%;
+}
+
+.sendButton {
+    width: 50px;
+    height: 50px;
+    background-color: lightgray;
+    margin-top: 5px;
+}
+
+.dialogs {
+    padding-bottom: 50px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    height: 50vh;
+    overflow: scroll;
+}
+
+.me {
+    float: left;
+    margin: 0 5px 0 20px;
+    height: 25px;
+}
+
+.interlocutor {
+    float: right;
+    margin: 0 20px 0 5px;
+    height: 25px;
+}
+
+.dialog {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.studsName {
+    display: inline-flex;
+}
+
+.avatar {
+    margin-left: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 100px;
+}
